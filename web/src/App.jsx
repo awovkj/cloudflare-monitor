@@ -3,6 +3,8 @@ import axios from 'axios';
 import Dashboard from './components/Dashboard';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { ThemeProvider } from './contexts/ThemeContext';
+import LanguageSwitch from './components/LanguageSwitch';
+import ThemeSwitch from './components/ThemeSwitch';
 import './App.css';
 
 export default function App() {
@@ -47,6 +49,10 @@ function AppContent() {
       <div className="app-container loading">
         <div className="loading-content">
           <div className="loading-spinner"></div>
+          <div className="header-controls">
+            <ThemeSwitch />
+            <LanguageSwitch />
+          </div>
           <h2>{t('dashboardTitle')}</h2>
           <p>{t('loading')}</p>
         </div>
@@ -58,6 +64,10 @@ function AppContent() {
     return (
       <div className="app-container error">
         <div className="error-content">
+          <div className="header-controls">
+            <ThemeSwitch />
+            <LanguageSwitch />
+          </div>
           <h2>{t('dashboardTitle')}</h2>
           <div className="error-message">
             <p>⚠️ {error}</p>
@@ -77,6 +87,10 @@ function AppContent() {
     return (
       <div className="app-container empty">
         <div className="empty-content">
+          <div className="header-controls">
+            <ThemeSwitch />
+            <LanguageSwitch />
+          </div>
           <h2>{t('dashboardTitle')}</h2>
           <p>{t('noData')}</p>
         </div>
