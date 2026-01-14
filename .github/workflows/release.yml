@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'New version (e.g., 1.0.1) or bump type (major, minor, patch)'
+        description: "New version (e.g., 1.0.1) or bump type (major, minor, patch)"
         required: true
-        default: 'patch'
+        default: "patch"
 
 jobs:
   bump-version:
@@ -16,13 +16,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT }}
           fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Configure Git
         run: |
@@ -33,7 +33,7 @@ jobs:
         id: bump
         run: |
           INPUT_VERSION="${{ inputs.version }}"
-          
+
           # Helper function to bump version
           bump_pkg() {
             local dir=$1
@@ -53,7 +53,7 @@ jobs:
             bump_pkg "web" $INPUT_VERSION
             bump_pkg "server" $INPUT_VERSION
           fi
-          
+
           # Get the new version from web/package.json
           NEW_VERSION=$(node -p "require('./web/package.json').version")
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
