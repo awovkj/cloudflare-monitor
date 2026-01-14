@@ -16,7 +16,7 @@ services:
       # Multi-language support
       # This project supports both Chinese and English interfaces, default is Chinese interface
       # To use the English interface, uncomment the following line
-      # - USE_ENGLISH=true
+      # - EN=true
 
       # Cloudflare配置 - 单账户方式（与README.md docker run命令对应）
       # 请根据实际情况修改以下配置

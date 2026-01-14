@@ -33,7 +33,7 @@ This project supports both Chinese (default) and English interfaces. You can swi
 ### Backend Language Switching
 
 - **Chinese (default)**: No environment variable needed
-- **English**: Set `USE_ENGLISH=true`
+- **English**: Set `EN=true`
 
 Example:
 
@@ -42,7 +42,7 @@ Example:
 npm start
 
 # Start with English interface
-USE_ENGLISH=true npm start
+EN=true npm start
 ```
 
 ### Frontend Language Switching
@@ -64,7 +64,7 @@ docker run -p 80:80 \
 docker run -p 80:80 \
   -e CF_TOKENS="your_cloudflare_api_token" \
   -e CF_ZONES="zone_id_1,zone_id_2" \
-  -e USE_ENGLISH=true \
+  -e EN=true \
   geekertao/cloudflare-analytics
 ```
 

@@ -488,7 +488,7 @@ async function updateData() {
             if (zoneData.geography.length > 0) {
               const topCountries = zoneData.geography.slice(0, 5).map(d =>
                 `${d.dimensions.clientCountryName}: ${d.sum.requests}`);
-              console.log(_(`    前5个国家/地区: ${topCountries.join(', ')}`, `    Top 5 Countries: ${topCountries.join(', ')}`));
+              console.log(_(`    前5个国家/地区: ${topCountries.join(', ')}`, `    Top 5 Countries/Regions: ${topCountries.join(', ')}`));
             }
           }
 
