@@ -34,21 +34,7 @@ npm --prefix web install
 npm run build:web
 ```
 
-3. 创建 D1 数据库（首次）
-
-```bash
-wrangler d1 create cloudflare_monitor_db
-```
-
-4. 将创建出的 `database_id` 填入 `wrangler.toml`
-
-5. 执行 D1 迁移
-
-```bash
-npm run d1:migrate
-```
-
-6. 配置 Cloudflare 账户信息（推荐使用 secret）
+3. 配置 Cloudflare 账户信息（推荐使用 secret）
 
 ```bash
 wrangler secret put CF_CONFIG
@@ -71,12 +57,20 @@ wrangler secret put CF_CONFIG
 }
 ```
 
-7. 本地开发与部署
+4. 本地开发与部署
 
 ```bash
 npm run dev
 npm run deploy
 ```
+
+`npm run deploy` 会自动执行以下流程：
+
+- 安装 `web` 子项目依赖
+- 构建前端静态资源
+- 自动检查/创建 D1 数据库并回写 `wrangler.toml` 的 `database_id`
+- 自动执行 D1 migrations
+- 执行 `wrangler deploy`
 
 ## Cloudflare Token 权限
 

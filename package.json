@@ -4,10 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "install:web": "npm --prefix web ci",
     "build:web": "npm --prefix web run build",
     "dev": "wrangler dev",
-    "deploy": "npm run build:web && wrangler deploy",
-    "d1:migrate": "wrangler d1 migrations apply cloudflare_monitor_db"
+    "d1:bootstrap": "node scripts/bootstrap-d1.mjs",
+    "d1:migrate": "wrangler d1 migrations apply cloudflare_monitor_db --remote",
+    "deploy": "npm run install:web && npm run build:web && npm run d1:bootstrap && npm run d1:migrate && wrangler deploy"
   },
   "devDependencies": {
     "wrangler": "^4.52.0"

@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { ComposableMap, Geographies, Geography, ZoomableGroup, useMap } from 'react-simple-maps';
+import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import { scaleLinear } from 'd3-scale';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -60,65 +60,6 @@ const countryNameMap = {
   "GR": "Greece",
   "IE": "Ireland",
   "NZ": "New Zealand"
-};
-
-// 缩放控件组件
-const ZoomControls = ({ setZoom, setCenter }) => {
-  const { isDarkMode } = useTheme();
-  
-  const buttonStyle = {
-    width: '30px',
-    height: '30px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: isDarkMode ? '#404040' : '#ffffff',
-    color: isDarkMode ? '#ffffff' : '#333333',
-    border: `1px solid ${isDarkMode ? '#505050' : '#e1e1e1'}`,
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontSize: '18px',
-    fontWeight: 'bold',
-    margin: '0 0 5px 0',
-    padding: 0,
-    outline: 'none'
-  };
-
-  return (
-    <div style={{
-      position: 'absolute',
-      right: '20px',
-      bottom: '20px',
-      display: 'flex',
-      flexDirection: 'column',
-      zIndex: 10
-    }}>
-      <button 
-        style={buttonStyle}
-        onClick={() => setZoom(z => Math.min(z * 1.5, 4))}
-        title="Zoom In"
-      >
-        +
-      </button>
-      <button 
-        style={buttonStyle}
-        onClick={() => setZoom(z => Math.max(z / 1.5, 1))}
-        title="Zoom Out"
-      >
-        -
-      </button>
-      <button 
-        style={buttonStyle}
-        onClick={() => {
-          setZoom(1);
-          setCenter([0, 0]);
-        }}
-        title="Reset"
-      >
-        ⟲
-      </button>
-    </div>
-  );
 };
 
 // 颜色图例组件
@@ -388,9 +329,6 @@ const WorldMap = ({ data, formatNumber, formatBytes, isMobile }) => {
                   // 计算颜色
                   const fillColor = stats ? getFillColor(stats.requests) : themeColors.default;
 
-                  // 获取显示名称：优先用映射表，否则用 ISO 代码
-                  const displayName = countryNameMap[isoCode] || geo.properties.name || isoCode || "Unknown";
-                  
                   return (
                     <Geography
                       key={geo.rsmKey}

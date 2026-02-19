@@ -187,12 +187,12 @@ function loadConfig(env) {
 
   const accounts = [];
 
-  if (env.CF_TOKENS && env.CF_ZONES) {
+  if (hasLegacyAccountConfig(env, "")) {
     accounts.push(buildAccountFromLegacyEnv(env, "", "默认账户"));
   }
 
   let i = 1;
-  while (env[`CF_TOKENS_${i}`] && env[`CF_ZONES_${i}`]) {
+  while (hasLegacyAccountConfig(env, `_${i}`)) {
     const fallbackName = `账户${i}`;
     const account = buildAccountFromLegacyEnv(env, `_${i}`, fallbackName);
     accounts.push(account);
@@ -208,18 +208,37 @@ function loadConfig(env) {
   return parsed;
 }
 
-function buildAccountFromLegacyEnv(env, suffix, fallbackName) {
-  const tokenKey = `CF_TOKENS${suffix}`;
-  const zonesKey = `CF_ZONES${suffix}`;
-  const domainsKey = `CF_DOMAINS${suffix}`;
-  const accountNameKey = `CF_ACCOUNT_NAME${suffix}`;
+function getFirstEnvValue(env, keys) {
+  for (const key of keys) {
+    const value = env[key];
+    if (typeof value === "string" && value.trim()) {
+      return value;
+    }
+  }
+  return "";
+}
 
-  const token = env[tokenKey].split(",").map((v) => v.trim()).find(Boolean);
-  const zoneIds = env[zonesKey].split(",").map((v) => v.trim()).filter(Boolean);
-  const domains = (env[domainsKey] || "")
-    .split(",")
+function parseList(value) {
+  return (value || "")
+    .split(/[\n,;]+/)
     .map((v) => v.trim())
     .filter(Boolean);
+}
+
+function hasLegacyAccountConfig(env, suffix) {
+  const token = getFirstEnvValue(env, [`CF_TOKENS${suffix}`, `CF_TOKEN${suffix}`]);
+  const zones = getFirstEnvValue(env, [`CF_ZONES${suffix}`, `CF_ZONE_IDS${suffix}`, `CF_ZONE${suffix}`]);
+  return Boolean(token && zones);
+}
+
+function buildAccountFromLegacyEnv(env, suffix, fallbackName) {
+  const token = getFirstEnvValue(env, [`CF_TOKENS${suffix}`, `CF_TOKEN${suffix}`]);
+  const zonesValue = getFirstEnvValue(env, [`CF_ZONES${suffix}`, `CF_ZONE_IDS${suffix}`, `CF_ZONE${suffix}`]);
+  const domainsValue = getFirstEnvValue(env, [`CF_DOMAINS${suffix}`, `CF_DOMAIN${suffix}`]);
+  const accountNameKey = `CF_ACCOUNT_NAME${suffix}`;
+
+  const zoneIds = parseList(zonesValue);
+  const domains = parseList(domainsValue);
 
   return {
     name: env[accountNameKey] || fallbackName,

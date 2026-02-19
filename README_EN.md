@@ -34,21 +34,7 @@ npm --prefix web install
 npm run build:web
 ```
 
-3. Create D1 database (first time)
-
-```bash
-wrangler d1 create cloudflare_monitor_db
-```
-
-4. Copy the generated `database_id` into `wrangler.toml`
-
-5. Apply D1 migrations
-
-```bash
-npm run d1:migrate
-```
-
-6. Configure Cloudflare account config (recommended as secret)
+3. Configure Cloudflare account config (recommended as secret)
 
 ```bash
 wrangler secret put CF_CONFIG
@@ -71,12 +57,20 @@ wrangler secret put CF_CONFIG
 }
 ```
 
-7. Local dev and deployment
+4. Local dev and deployment
 
 ```bash
 npm run dev
 npm run deploy
 ```
+
+`npm run deploy` now runs the full deployment pipeline automatically:
+
+- Install dependencies for the `web` subproject
+- Build frontend static assets
+- Auto-check/create D1 database and update `database_id` in `wrangler.toml`
+- Apply D1 migrations
+- Run `wrangler deploy`
 
 ## Required Cloudflare Token Permissions
 
