@@ -6,7 +6,7 @@
   "scripts": {
     "build:web": "npm --prefix web run build",
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
+    "deploy": "npm run build:web && wrangler deploy",
     "d1:migrate": "wrangler d1 migrations apply cloudflare_monitor_db"
   },
   "devDependencies": {
