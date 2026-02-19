@@ -5,6 +5,7 @@ import path from "node:path";
 const DB_NAME = "cloudflare_monitor_db";
 const BINDING = "DB";
 const WRANGLER_TOML = path.resolve(process.cwd(), "wrangler.toml");
+const PLACEHOLDER_DATABASE_ID = "REPLACE_WITH_YOUR_D1_DATABASE_ID";
 
 function run(command) {
   try {
@@ -27,9 +28,41 @@ function getDatabaseIdByName(name) {
   return found?.uuid || null;
 }
 
+function getConfiguredDatabaseId() {
+  const source = readFileSync(WRANGLER_TOML, "utf8");
+  const sectionPattern = /\[\[d1_databases\]\]([\s\S]*?)(?=\n\[\[|\n\[|$)/g;
+
+  for (const match of source.matchAll(sectionPattern)) {
+    const section = match[0];
+    if (!new RegExp(`binding\\s*=\\s*"${BINDING}"`).test(section)) {
+      continue;
+    }
+
+    const idMatch = section.match(/database_id\s*=\s*"([^"]*)"/);
+    if (!idMatch) {
+      return null;
+    }
+
+    const databaseId = idMatch[1].trim();
+    if (!databaseId || databaseId === PLACEHOLDER_DATABASE_ID) {
+      return null;
+    }
+
+    return databaseId;
+  }
+
+  return null;
+}
+
 function ensureDatabaseExists() {
+  const configuredDatabaseId = getConfiguredDatabaseId();
+  if (configuredDatabaseId) {
+    console.log(`Using existing D1 database_id from wrangler.toml: ${configuredDatabaseId}`);
+    return configuredDatabaseId;
+  }
+
   if (!process.env.CLOUDFLARE_API_TOKEN) {
-    throw new Error("CLOUDFLARE_API_TOKEN is required for D1 bootstrap in non-interactive deploy environments.");
+    throw new Error("CLOUDFLARE_API_TOKEN is required when wrangler.toml has no real D1 database_id and bootstrap needs to query/create D1.");
   }
 
   let databaseId = getDatabaseIdByName(DB_NAME);
