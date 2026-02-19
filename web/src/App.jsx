@@ -33,9 +33,8 @@ function AppContent() {
   });
 
   useEffect(() => {
-    // 使用相对路径，通过nginx反向代理访问
     axios
-      .get('/data/analytics.json')
+      .get('/api/analytics')
       .then((res) => {
         console.log('API Response:', res.data); // 添加调试日志
         setAccounts(res.data.accounts || []);
@@ -43,9 +42,8 @@ function AppContent() {
       })
       .catch((error) => {
         console.error('API Error:', error);
-        setError(t('loadError'));
-        // 如果数据文件不存在，显示提示信息
-        console.log('请确保后端API正在运行并已生成数据文件');
+        setError('loadError');
+        console.log('请确保 Cloudflare Worker 已部署并完成数据刷新');
       })
       .finally(() => {
         setLoading(false);
@@ -78,7 +76,7 @@ function AppContent() {
           </div>
           <h2>{t('dashboardTitle')}</h2>
           <div className="error-message">
-            <p>⚠️ {error}</p>
+              <p>⚠️ {t(error)}</p>
             <button 
               onClick={() => window.location.reload()} 
               className="retry-button"

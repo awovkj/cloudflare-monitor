@@ -61,7 +61,7 @@ const languages = {
 
         // Loading & Error
         loading: '正在加载数据...',
-        loadError: '无法加载数据，请确保后端API正在运行并已生成数据文件',
+        loadError: '无法加载数据，请确保 Cloudflare Worker 已部署并已写入 D1 数据',
         retry: '重新加载',
 
         // Footer
@@ -161,7 +161,7 @@ const languages = {
 
         // Loading & Error
         loading: 'Loading data...',
-        loadError: 'Unable to load data. Please ensure the backend API is running and data files are generated',
+        loadError: 'Unable to load data. Please ensure Cloudflare Worker is deployed and D1 has snapshot data',
         retry: 'Retry',
 
         // Footer

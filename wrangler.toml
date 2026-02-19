@@ -1,0 +1,16 @@
+name = "cloudflare-monitor"
+main = "worker/index.js"
+compatibility_date = "2026-02-19"
+
+[assets]
+directory = "./web/build"
+binding = "ASSETS"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "cloudflare_monitor_db"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+migrations_dir = "worker/migrations"
+
+[triggers]
+crons = ["0 */2 * * *"]

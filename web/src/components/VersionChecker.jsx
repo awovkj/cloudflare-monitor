@@ -4,6 +4,15 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/ThemeContext';
 import packageJson from '../../package.json';
 
+const REPO_OWNER = "Geekertao";
+const REPO_NAME = "cloudflare-monitor";
+const API_ENDPOINTS = [
+  `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/latest`,
+  `https://gh.dpik.top/https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/latest`,
+  `https://gh.llkk.cc/https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/latest`,
+  `https://gh.felicity.ac.cn/https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/latest`
+];
+
 const VersionChecker = () => {
   const { t } = useLanguage();
   const { isDarkMode } = useTheme();
@@ -14,18 +23,6 @@ const VersionChecker = () => {
     loading: true,
     error: false
   });
-
-  // 仓库信息 - 请根据实际 GitHub 仓库修改
-  const REPO_OWNER = "Geekertao"; 
-  const REPO_NAME = "cloudflare-monitor";
-
-  // 定义 API 端点列表，包含官方 API 和代理 API
-  const API_ENDPOINTS = [
-    `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/latest`,
-    `https://gh.dpik.top/https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/latest`,
-    `https://gh.llkk.cc/https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/latest`,
-    `https://gh.felicity.ac.cn/https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/latest`
-  ];
 
   useEffect(() => {
     // 检查是否有自定义版本号（通过环境变量或全局配置）
